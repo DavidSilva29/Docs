@@ -1,0 +1,19 @@
+git config --global user.name "<FIRSTNAME LASTNAME>"
+git config --global user.email "<YOUR EMAIL>"
+-- -----------------------------------------------------------------------
+git config --list
+git config --global credential.username "DavidSilva29"
+git config --global credential.username "Da_Beat"
+git config --global --replace-all user.email "david.m.silva.cruz@gmail.com"
+
+ls -al ~/.ssh
+ssh-keygen -t ed25519 -C “david.silva@wizeline.com”
+/Users/david.silva/.ssh/id_bitbucket_personal
+eval "$(ssh-agent -s)"
+open ~/.ssh/config
+pbcopy < ~/.ssh/id_bitbucket_personal.pub
+
+-- -----------------------------------------------------------------------
+git config --global --replace-all user.name "David Silva"
+
+git config --global --unset user.mail

@@ -1,0 +1,147 @@
+https://www.youtube.com/watch?v=bhBSlnQcq2k&ab_channel=Amigoscode
+https://www.freecodecamp.org/news/the-docker-handbook/
+
+*nombre del contenedor - el nombre que se le quiere dar al contenedor
+container name - el nombre que ya tiene el contenedor
+
+docker --version
+docker pull nginx:latest
+docker pull nginx:alpine
+docker images                 // listar las imagénes disponibles
+docker run <image_name>:<tag>      // correr un contenedor
+docker run -d <image_name>:<tag>   // correr un contenedor en modo separado/suelto/desprendido (para seguir usando la misma consola)
+docker container ls           // listar los contenedores que están corriendo
+docker ps                     // listar los contenedores que están corriendo
+docker ps -a                  // listar todos los contenedores
+
+docker run -d -p 8080:80 <image_name>:<tag>            // correr un contenedor en modo separado y mapear el puerto 8080 del localhost al puerto 80 del contenedor
+docker run -d -p 8080:80 -p 3000:80 <image_name>:<tag> // correr un contenedor y mapear los puertos 8080 y 3000 del localhost al mismo puerto 80 dentro del contenedor
+docker run --name <nombre del contenedor> -d -p 8080:80 <image_name>:<tag> // correr y nombrar un contenedor con la configuración previa
+
+docker stop <container_id>    // detener un contenedor por id
+docker stop <container_name>  // detener un contenedor por nombre
+docker start <container_id>   // correr un contenedor de nuevo
+docker start <container_name> // correr un contenedor de nuevo
+
+docker rmi <image_id>         // borrar una imagen por id 
+docker rm <container_id>      // borrar un contenedor por id
+docker rm <container_name>    // borrar un contenedor por nombre
+docker rm $(docker ps -aq)    // borrar todos los contenedores que no están corriendo
+docker rm -f $(docker ps -aq) // borrar todos los contenedores aunque estén corriendo
+
+// listar contenedores en un formato legible
+export FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nIMAGE\t{{.Image}}\nPORTS\t{{.Ports}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.CreatedAt}}\nSTATUS\t{{.Status}}\n"
+docker ps --format=$FORMAT
+
+docker rename <old-name> <new-name>
+
+docker volume ls    // listar todos los vólumenes
+docker volume ls -q // listar nombres de vólumenes
+docker volume rm <volume_name>   // borrar un volumen por nombre
+docker volume rm $(docker volume ls -q) // borrar todos los vólumenes
+docker volume prune
+
+// crear un bind mount/volumen (entre comillas dobles para directorios con espacios)
+docker run --name website -d -p 8080:80 --mount type=bind,source="$(pwd)",target=/usr/share/nginx/html nginx:latest
+docker run --name website -d -p 8080:80 --mount type=bind,source="$(pwd)",target=/usr/share/nginx/html nginx:alpine
+
+//acceder a un contenedor
+winpty docker exec -it <container_name or container_id> bash
+winpty docker exec -it <container_name or container_id> //bin//sh
+winpty docker exec -it website bash
+
+cd /usr/share/nginx/html/
+ls -la
+
+https://hub.docker.com/_/nginx
+
+// crear un archivo Dockerfile (en el directorio a servir) con las siguientes instrucciones dentro
+FROM nginx
+COPY ./ /usr/share/nginx/html
+
+FROM nginx
+ADD . /usr/share/nginx/html
+
+// crear un archivo .dockerignore (en el directorio a servir) con las siguientes líneas
+node_modules
+Dockerfile
+.git
+
+// entrar en el directorio a servir y construir la imagen con el comando, y luego correr el contenedor
+docker build --tag <image_name>:<tag> .
+docker build -t <image_name>:<tag> .
+docker run --name <nombre del contenedor> -d -p 8080:80 <image_name>:<tag>
+
+// Dockerfile para una aplicación de Node.js
+FROM node:alpine
+WORKDIR /app
+ADD package*.json ./
+RUN npm install
+ADD . .
+CMD node.js
+
+https://www.youtube.com/watch?v=pMO26j2OUME&list=PLy7NrYWoggjw_LIiDK1LXdNN82uYuuuiC&index=1&ab_channel=TechWorldwithNana
+https://learning.postman.com/docs/running-collections/using-newman-cli/integration-with-jenkins/
+
+npm install -g newman
+
+docker pull jenkins/jenkins:lts
+docker run --name jenkins -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+docker run --name jenkins -d -p 9080:8080 -p 50000:50000 jenkins/jenkins:lts
+docker logs jenkins
+winpty docker exec -it jenkins bash
+cd /var/jenkins_home 
+
+http://localhost:9080/ // Solo en Chrome
+da-beat
+Dante308207532!
+
+docker container list | grep mobile
+docker logs -f --since 1h  api-mobile
+
+newman run CustomerServices-VehicleActivity.postman_collection.json -e Prod.postman_environment.json
+---------------------------------------------------------------------------------------------------------------
+https://devops4solutions.com/how-to-deploy-containerized-applications-with-amazon-ecs/
+
+Mailing
+docker images
+docker rmi <image id>
+docker build -t dabeat2040/mailing:1.0 .
+docker run -p 5000:3000 <image id>
+
+// DB Producción
+DBUSER=david_silva
+DBPASSWORD=*p^*924^#cpfZhm!2!X
+
+const pool = new Pool({
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWORD,
+  host: '10.88.9.141',
+  port: 5432,
+  database: 'maya'
+});
+
+// DB QA
+DBUSER=dsilva
+DBPASSWORD=Covid1984$
+
+const pool = new Pool({
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWORD,
+  host: '10.88.9.215',
+  port: 5433,
+  database: 'maya'
+});
+
+// .env
+PORT=3000
+
+DBUSER=david_silva
+DBPASSWORD=*p^*924^#cpfZhm!2!X
+
+TIMESETTING='0 0 * * 1'
+
+HOST=10.88.1.143
+EMAILPORT=25
+
+RECEIVEREMAIL='retrocc@omnitracs.com, pamado@omnitracs.com, iochoa@omnitracs.com, jarosales@omnitracs.com, ecarranza@omnitracs.com, '
